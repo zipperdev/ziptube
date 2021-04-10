@@ -1,34 +1,41 @@
-export const trending = (req, res) => {
-    const videos = [
-        {
-            title:"First Video", 
-            rating: 5, 
-            comments: 2, 
-            createdAt: "2 minutes ago", 
-            views: 1000, 
-            id: 1 
-        }, 
-        {
-            title:"Second Video", 
-            rating: 5, 
-            comments: 5, 
-            createdAt: "4 minutes ago", 
-            views: 10000, 
-            id: 2 
-        }, 
-        {
-            title:"Third Video", 
-            rating: 5, 
-            comments: 10, 
-            createdAt: "10 minutes ago", 
-            views: 100000, 
-            id: 3 
-        }
-    ];
+import Video from "../models/Video";
+
+export const home = async (req, res) => {
+    const videos = await Video.find({});
     return res.render("home", { pageTitle: "Home", videos });
 };
-export const see = (req, res) => res.render("watch", { pageTitle: "Watch" });
-export const search = (req, res) => res.send("Search");
-export const upload = (req, res) => res.send("Upload");
-export const edit = (req, res) => res.render("edit", { pageTitle: "Edit" });
-export const remove = (req, res) => res.send("Delete");
+export const watch = (req, res) => {
+    const { id } = req.params;
+    const video = videos[id - 1];
+    return res.render("watch", { pageTitle: "Watching" });
+};
+export const getEdit = (req, res) => {
+    const { id } = req.params;
+    const video = videos[id - 1]; 
+    return res.render("edit",  { pageTitle: "Editing" });
+};
+export const postEdit = (req, res) => {
+    const { id } = req.params;
+    const { title } = req.body;
+    return res.redirect(`/videos/${id}`);
+};
+
+
+export const getUpload = (req, res) => {
+    return res.render("upload", { pageTitle: "Upload Video" });
+};
+export const postUpload = async (req, res) => {
+    const { title, description, hashtags } = req.body;
+    await Video.create({
+        title, 
+        description, 
+        createdAt: Date.now(), 
+        hashtags: hashtags.split(",").map((word) => word.trim().split("")[0] === "#" ? word.trim() : `#${word.trim()}`), 
+        meta: {
+            views: 0, 
+            like: 0, 
+            unlike: 0
+        }
+    });
+    return res.redirect("/");
+};
