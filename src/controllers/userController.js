@@ -9,7 +9,6 @@ export const getSignup = (req, res) => {
 export const postSignup = async (req, res) => {
     const { name, username, email, password, confrimPassword, location } = req.body;
     const pageTitle = "Sign Up";
-
     const exists = await User.findOne({ email });
     if (exists) {
         if (exists.socialOnly) {
@@ -166,7 +165,6 @@ export const getEdit = (req ,res) => {
 export const postEdit = async (req, res) => {
     const { user: { _id, avatarUrl } } = req.session;
     const { name, username, email, location } = req.body;
-
     if (username && email) {
         const emailUser = await User.findOne({ email });
         if (emailUser && emailUser._id != _id) {
@@ -198,7 +196,6 @@ export const getChangePassword = (req, res) => {
 export const postChangePassword = async (req, res) => {
     const { user: { _id, password } } = req.session;
     const { cPassword, nPassword, nConfrimPassword } = req.body;
-
     if (cPassword && nPassword && nConfrimPassword) {
         const passwordMatch = await bcrypt.compare(cPassword, password);
         if (!passwordMatch) {

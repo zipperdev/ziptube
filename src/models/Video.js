@@ -13,6 +13,10 @@ const videoSchema = new mongoose.Schema({
         maxLength: 200, 
         required: true
     }, 
+    fileUrl: {
+        type: String, 
+        required: true
+    }, 
     createdAt: {
         type: Date, 
         default: Date.now, 
