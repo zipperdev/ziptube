@@ -164,29 +164,63 @@ export const getEdit = (req ,res) => {
 };
 
 export const postEdit = async (req, res) => {
-    const { user: { _id } } = req.session;
+    const { user: { _id, avatarUrl } } = req.session;
     const { name, username, email, location } = req.body;
 
     if (username && email) {
-        const emailExists = await User.exists({ email });
-        if (emailExists) {
+        const emailUser = await User.findOne({ email });
+        if (emailUser && emailUser._id != _id) {
             return res.render("edit-profile", { pageTitle: "Edit Profile", errorMessage: "This email was already taken." });
         } else {
             try {
                 const updatedUser = await User.findByIdAndUpdate(_id, {
+                    avatarUrl: req.file ? req.file.path.split("\\").join("/") : avatarUrl, 
                     name: name ? name : "Undefined", 
                     email, 
                     username, 
                     location: location ? location : "Undefined"
                 }, { new: true });
                 req.session.user = updatedUser;
-                return res.redirect("/");
+                return res.redirect("/users/edit");
             } catch (error) {
                 return res.render("edit-profile", { pageTitle: "Edit Profile", errorMessage: error.message });
             };
         };
     } else {
         return res.render("edit-profile", { pageTitle: "Edit Profile", errorMessage: "Username and email is required." });
+    };
+};
+
+export const getChangePassword = (req, res) => {
+    return res.render("change-password", { pageTitle: "Change Password" });
+};
+
+export const postChangePassword = async (req, res) => {
+    const { user: { _id, password } } = req.session;
+    const { cPassword, nPassword, nConfrimPassword } = req.body;
+
+    if (cPassword && nPassword && nConfrimPassword) {
+        const passwordMatch = await bcrypt.compare(cPassword, password);
+        if (!passwordMatch) {
+            return res.status(400).render("change-password", { pageTitle: "Change Passoword", errorMessage: "Current Password doesn't match." });
+        } else {
+            if (nPassword !== nConfrimPassword) {
+                return res.status(400).render("change-password", { pageTitle: "Change Passoword", errorMessage: "Password confrimation doesn't match." });
+            } else {
+                try {
+                    const user = await User.findById(_id);
+                    user.password = nPassword;
+                    await user.save();
+                    req.session.user.password = user.password;
+                    req.session.destroy();
+                    return res.redirect("/login");
+                } catch (error) {
+                    return res.status(400).render("change-password", { pageTitle: "Change Passoword", errorMessage: error.message });
+                };
+            };
+        };
+    } else {
+        return res.status(400).render("change-password", { pageTitle: "Change Passoword", errorMessage: "All input is required." });
     };
 };
 
