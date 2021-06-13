@@ -2,6 +2,13 @@ extends base
 include mixins/video
 
 block content 
+    img(src=user.avatarUrl, alt="")
+    h1=user.username 
+    h4=user.name 
+    if String(user._id) === String(loggedInUser._id) 
+        a(href="/users/edit") Edit Profile
+    if String(user._id) === String(loggedInUser._id) 
+        a(href="/users/remove") Delete User
     each video in user.videos 
         +video(video)
     else 

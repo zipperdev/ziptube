@@ -1,0 +1,32 @@
+/*
+ * ATTENTION: The "eval" devtool has been used (maybe by default in mode: "development").
+ * This devtool is neither made for production nor for readable output files.
+ * It uses "eval()" calls to create a separate source file in the browser devtools.
+ * If you are trying to read the output file, select a different devtool (https://webpack.js.org/configuration/devtool/)
+ * or disable the default devtool with "devtool: false".
+ * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
+ */
+/******/ (() => { // webpackBootstrap
+/******/ 	var __webpack_modules__ = ({
+
+/***/ "./src/client/js/commentSection.js":
+/*!*****************************************!*\
+  !*** ./src/client/js/commentSection.js ***!
+  \*****************************************/
+/***/ (() => {
+
+eval("function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }\n\nfunction _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, \"next\", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, \"throw\", err); } _next(undefined); }); }; }\n\nvar videoContainer = document.getElementById(\"videoContainer\");\nvar form = document.getElementById(\"commentForm\");\nvar comments = document.querySelectorAll(\".video__comment\");\n\nvar addComment = function addComment(text, newCommentId) {\n  var videoComments = document.querySelector(\".video__comments ul\");\n  var newComment = document.createElement(\"li\");\n  var icon = document.createElement(\"i\");\n  var span = document.createElement(\"span\");\n  var deleteSpan = document.createElement(\"span\");\n  var deleteIcon = document.createElement(\"i\");\n  icon.className = \"far fa-comment-alt\";\n  deleteIcon.className = \"fas fa-eraser\";\n  span.innerText = \" \".concat(text);\n  deleteSpan.appendChild(deleteIcon);\n  newComment.className = \"video__comment\";\n  newComment.appendChild(icon);\n  newComment.appendChild(span);\n  newComment.appendChild(deleteSpan);\n  newComment.dataset.id = newCommentId;\n  newComment.addEventListener(\"click\", handleCommentDelete);\n  videoComments.prepend(newComment);\n};\n\nvar handleCommentDelete = /*#__PURE__*/function () {\n  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(e) {\n    var div, comment, response;\n    return regeneratorRuntime.wrap(function _callee$(_context) {\n      while (1) {\n        switch (_context.prev = _context.next) {\n          case 0:\n            div = e.target.parentElement;\n            comment = div.parentElement;\n            _context.next = 4;\n            return fetch(\"/api/videos/\".concat(videoContainer.dataset.videoid, \"/comment/\").concat(comment.dataset.id), {\n              method: \"DELETE\",\n              headers: {\n                \"Content-Type\": \"application/json\"\n              }\n            });\n\n          case 4:\n            response = _context.sent;\n\n            if (response.status === 200) {\n              e.target.removeEventListener(\"click\", handleCommentDelete);\n              comment.remove();\n            }\n\n            ;\n\n          case 7:\n          case \"end\":\n            return _context.stop();\n        }\n      }\n    }, _callee);\n  }));\n\n  return function handleCommentDelete(_x) {\n    return _ref.apply(this, arguments);\n  };\n}();\n\nvar handleSubmit = /*#__PURE__*/function () {\n  var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(e) {\n    var textarea, text, videoId, response, _yield$response$json, newCommentId;\n\n    return regeneratorRuntime.wrap(function _callee2$(_context2) {\n      while (1) {\n        switch (_context2.prev = _context2.next) {\n          case 0:\n            if (e.preventDefault) {\n              e.preventDefault();\n            } else {\n              e.returnValue = false;\n            }\n\n            ;\n            textarea = form.querySelector(\"textarea\");\n            text = textarea.value;\n            videoId = videoContainer.dataset.videoid;\n\n            if (!text.trim()) {\n              _context2.next = 17;\n              break;\n            }\n\n            _context2.next = 8;\n            return fetch(\"/api/videos/\".concat(videoId, \"/comment\"), {\n              method: \"POST\",\n              headers: {\n                \"Content-Type\": \"application/json\"\n              },\n              body: JSON.stringify({\n                text: text\n              })\n            });\n\n          case 8:\n            response = _context2.sent;\n\n            if (!(response.status === 201)) {\n              _context2.next = 16;\n              break;\n            }\n\n            textarea.value = \"\";\n            _context2.next = 13;\n            return response.json();\n\n          case 13:\n            _yield$response$json = _context2.sent;\n            newCommentId = _yield$response$json.newCommentId;\n            addComment(text, newCommentId);\n\n          case 16:\n            ;\n\n          case 17:\n            ;\n\n          case 18:\n          case \"end\":\n            return _context2.stop();\n        }\n      }\n    }, _callee2);\n  }));\n\n  return function handleSubmit(_x2) {\n    return _ref2.apply(this, arguments);\n  };\n}();\n\ncomments.forEach(function (e) {\n  var deleteButton = e.querySelector(\"span i\");\n\n  if (deleteButton) {\n    e.querySelector(\"span i\").addEventListener(\"click\", handleCommentDelete);\n  }\n\n  ;\n});\n\nif (form) {\n  form.addEventListener(\"submit\", handleSubmit);\n}\n\n;\n\n//# sourceURL=webpack://ziptube/./src/client/js/commentSection.js?");
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module can't be inlined because the eval devtool is used.
+/******/ 	var __webpack_exports__ = {};
+/******/ 	__webpack_modules__["./src/client/js/commentSection.js"]();
+/******/ 	
+/******/ })()
+;

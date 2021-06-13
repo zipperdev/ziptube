@@ -1,0 +1,25 @@
+header.header 
+    a.header__link(href="/") 
+        .ziptube-icon.fab.fa-youtube
+            span
+        span.ziptube-title Ziptube
+    form(action="/search", method="GET") 
+        input(name="keyword", placeholder=" Search by title", type="text")
+        button(type="submit").fas.fa-search 
+    nav 
+        ul 
+            li 
+                a.fas.fa-home(href="/")
+            if loggedIn 
+                li 
+                    a.fas.fa-plus(href="/videos/upload")
+                li 
+                    a(href=`/users/${loggedInUser._id}`) 
+                        img(src=loggedInUser.avatarUrl, alt="")
+                li 
+                    a.fas.fa-sign-out-alt(href="/logout")
+            else 
+                li 
+                    a.fas.fa-sign-in-alt(href="/login")
+                li 
+                    a.fas.fa-user-plus(href="/signup")

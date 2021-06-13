@@ -1,5 +1,6 @@
 import User from "../models/User";
 import Video from "../models/Video";
+import Comment from "../models/Comment";
 import fetch from "node-fetch";
 import bcrypt from "bcrypt";
 
@@ -130,6 +131,7 @@ export const callbackGithubLogin = async (req, res) => {
             (email) => email.primary === true && email.verified === true
         );
         if (!emailObj) {
+            req.flash("error", "Not autorized");
             return res.redirect("/login");
         };
         let user = await User.findOne({ email: emailObj.email });
@@ -148,6 +150,7 @@ export const callbackGithubLogin = async (req, res) => {
         req.session.user = user;
         return res.redirect("/");
     } else {
+        req.flash("error", "Not autorized");
         return res.redirect("/login");
     };
 };
@@ -159,7 +162,13 @@ export const logout = (req, res) => {
 
 export const see = async (req, res) => {
     const { id } = req.params;
-    const user = await User.findById(id).populate("videos");
+    const user = await User.findById(id).populate({
+        path: "videos", 
+        populate: {
+            path: "owner", 
+            model: "User"
+        }
+    });
     if (!user) {
         return res.status(404).render("404", {
             pageTitle: "User not found."
@@ -234,4 +243,15 @@ export const postChangePassword = async (req, res) => {
     };
 };
 
-export const remove = (req, res) => res.send("Remove");
+export const remove = async (req, res) => {
+    const { user } = req.session;
+    try {
+        await User.findByIdAndDelete(user._id);
+        await Video.deleteMany({ owner: user._id });
+        await Comment.deleteMany({ owner: user._id });
+        req.session.destroy();
+        return res.redirect("/signup");
+    } catch (error) {
+        return res.redirect("/");
+    };
+};

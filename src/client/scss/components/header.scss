@@ -1,0 +1,133 @@
+header {
+    z-index: 10;
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    box-shadow: $shadow;
+    padding: 20px 0;
+    height: 30px;
+    display: flex;
+    background-color: $lightgray;
+    align-items: center;
+    @media screen and (max-width: 695px) {
+        height: 100px;
+    }
+    .header__link {
+        position: absolute;
+        left: 50px;
+        display: flex;
+        align-items: center;
+        color: $lightblack;
+        .ziptube-icon {
+            z-index: 1;
+            position: relative;
+            color: $orange;
+            font-size: 38px;
+            span {
+                z-index: -1;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                display: block;
+                height: 20px;
+                width: 20px;
+                background-color: #fff;
+            }
+        }
+        .ziptube-title {
+            margin: 0 0 4px 4px;
+            font-size: 30px;
+            font-weight: 600;
+            font-family: "Titillium Web", sans-serif;
+        }
+        @media screen and (max-width: 695px) {
+            left: 35px;
+            top: 30px;
+        }
+    }
+    form {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-56%);
+        input[name="keyword"] {
+            padding-left: 10px;
+        }
+        input[type="submit"], 
+        button[type="submit"] {
+            width: 70px;
+            height: 35.5px !important;
+            margin-left: 2px;
+            color: $lightblack;
+            font-size: 16px;
+            background-color: $lightgray;
+        }
+        @media screen and (max-width: 1175px) and (min-width: 990px) {
+            width: fit-content;
+            input[name="keyword"] {
+                width: 400px;
+            }
+        } 
+        @media screen and (max-width: 990px) and (min-width: 840px) {
+            width: fit-content;
+            transform: translateX(-58%);
+            input[name="keyword"] {
+                width: 300px;
+            }
+            input[type="submit"], 
+            button[type="submit"] {
+                width: 50px;
+            }
+        }
+        @media screen and (max-width: 840px) and (min-width: 695px) {
+            width: fit-content;
+            transform: translateX(-63%);
+            input[name="keyword"] {
+                width: 150px;
+            }
+            input[type="submit"], 
+            button[type="submit"] {
+                width: 50px;
+            }
+        }
+        @media screen and (max-width: 695px) {
+            width: fit-content;
+            top: 100px;
+            transform: translateX(-50%);
+            input[name="keyword"] {
+                width: 300px;
+            }
+        }
+    }
+    nav {
+        position: absolute;
+        right: 50px;
+        @media screen and (max-width: 695px) {
+            right: 35px;
+            top: 30px;
+        }
+        ul {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            li {
+                margin-left: 26px;
+                font-size: 24px;
+                font-weight: 600;
+                text-transform: uppercase;
+                a {
+                    font-weight: 600;
+                    color: $lightblack;
+                    img {
+                        border-radius: 50%;
+                        width: 26px;
+                        height: 26px;
+                        border: 2px solid #fff;
+                        background-color: #fff;
+                    }
+                }
+            }
+        }
+    }
+}

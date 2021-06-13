@@ -1,0 +1,19 @@
+.recent {
+    padding: 20px 15px;
+    h1 {
+        font-size: 20px;
+        font-weight: 400;
+        margin-bottom: 10px;
+    }
+    .recent-videos {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+        justify-content: center;
+        .video-mixin {
+            margin: 10px 0;
+            margin-left: 50%;
+            transform: translateX(-50%);
+        }
+    }
+}

@@ -17,6 +17,10 @@ const videoSchema = new mongoose.Schema({
         type: String, 
         required: true
     }, 
+    thumbnailUrl: {
+        type: String, 
+        required: true
+    }, 
     createdAt: {
         type: Date, 
         default: Date.now, 
@@ -27,6 +31,13 @@ const videoSchema = new mongoose.Schema({
             type: String, 
             trim: true, 
             required: true
+        }
+    ], 
+    comments: [
+        {
+            type: mongoose.Schema.Types.ObjectId, 
+            required: true, 
+            ref: "Comment"
         }
     ], 
     owner: {

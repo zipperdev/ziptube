@@ -1,14 +1,51 @@
 extends base 
 
 block content 
-    video(src=video.fileUrl, controls) 
-    div 
-        p=video.description 
-        small=video.createdAt 
-    div 
-        small Uploadaed by 
-            a(href=`/users/${video.owner._id}`)=video.owner.username
-    if String(video.owner._id) === String(loggedInUser._id) 
-        a(href=`${video.id}/edit`) Edit Video 
-        br 
-        a(href=`${video.id}/delete`) Delete Video 
+    div.videoData
+        div#videoContainer(data-videoId=video._id)
+            video(src=video.fileUrl)
+            div#videoControls.videoControls
+                div.videoControls__play
+                    span#play.videoControls__playBtn
+                        i.fas.fa-play
+                    div.videoControls__time
+                        span#currenTime 00:00
+                        span  / 
+                        span#totalTime 00:00
+                input(type="range", step="0.01", value="0", min="0")#timeline.videoControls__timeline
+                div.videoControls__volume
+                    input(type="range", step="0.01", value=0.5, min="0", max="1")#volume
+                    span#mute
+                        i.fas.fa-volume-up
+                div 
+                    span#fullScreen
+                        i.fas.fa-expand
+        div 
+            p=video.description 
+            small=video.createdAt 
+        div 
+            small Uploadaed by 
+                a(href=`/users/${video.owner._id}`)=video.owner.username
+        if String(video.owner._id) === String(loggedInUser._id) 
+            a(href=`${video.id}/edit`) Edit Video 
+            br 
+            a(href=`${video.id}/delete`) Delete Video 
+    if loggedIn 
+        .video__add-comments 
+            form.video__comment-form#commentForm 
+                textarea(cols="30", rows="10", placeholder="Write a comment")
+                button Add Comment
+    .video__comments
+        ul 
+            each comment in video.comments.reverse() 
+                li.video__comment(data-id=comment.id)
+                    i.far.fa-comment-alt
+                    span #{` ${comment.text}`}
+                    if String(loggedInUser._id) === String(comment.owner) 
+                        span
+                            i.fas.fa-eraser
+
+block scripts 
+    script(src="/static/js/videoPlayer.js") 
+    if loggedIn 
+        script(src="/static/js/commentSection.js")
